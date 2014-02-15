@@ -604,6 +604,22 @@ class Neap(object):
             self.icon,
             )
 
+    def switch_up(self):
+        '''Switch to upper desktop.'''
+        return
+
+    def switch_lower(self):
+        '''Switch to lower desktop.'''
+        return
+
+    def switch_left(self):
+        '''Switch to left desktop.'''
+        return
+
+    def switch_right(self):
+        '''Switch to right desktop.'''
+        return
+
     def about(self, menu_item):
         '''Shows an about dialog.'''
 
@@ -646,6 +662,7 @@ class Neap(object):
 
         num = self.pager.get_current_desktop()
         self.update_pixbuf(num)
+
         gtk.main()
 
 
