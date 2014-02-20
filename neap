@@ -25,10 +25,13 @@ except ImportError:
     keybinder = None
 
 __appname__ = 'neap'
-__author__ = ['Philip Busch <vzxwco@gmail.com>', 'Clément Lavoillotte', 'Samuel Bauer <samuel.bauer@yahoo.fr>']
-__version__ = '0.7.1'
+__author__ = ['Philip Busch <vzxwco@gmail.com>',
+              'Clément Lavoillotte',
+              'Samuel Bauer <samuel.bauer@yahoo.fr>',
+              '10sr <8.slashes+git@gmail.com>']
+__version__ = '0.8'
 __license__ = 'BSD'
-__website__ = 'http://code.google.com/p/neap/'
+__website__ = 'https://github.com/10sr/neap'
 
 DEFAULT_CONFIG = \
     """;{0} v{1} config file generated {2}
