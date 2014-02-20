@@ -395,7 +395,7 @@ class NeapConfig(object):
                     print ("{0}: {1}: {2} = {3}: invalid syntax".format(self.name, file, key, val))
                     return False
 
-            if not keybinder:
+            if not parser.has_section('neap_hotkey') or not keybinder:
                 # hotkey will not be enabled when keybinder is not installed
                 continue
 
