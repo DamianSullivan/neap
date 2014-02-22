@@ -68,9 +68,12 @@ columns = 0
 [neap_hotkey]
 ;hotkeys for neap
 ;hotkey_up = <super>Up
-;hotkey_down = <ctrl><shift>j
-;hotkey_left = <alt>F1
+;hotkey_down = <control><shift>j
+;hotkey_left =
 ;hotkey_right =
+;hotkey_<num> can be defined up to 15
+;hotkey_0 = <ctl>1
+;hotkey_1 = <ctrl>F2
 
 """
 
@@ -298,6 +301,11 @@ class NeapConfig(object):
         self.conf['hotkey_down'] = None
         self.conf['hotkey_left'] = None
         self.conf['hotkey_right'] = None
+
+        for i in range(16):
+            self.conf['hotkey_' + str(i)] = None
+
+        return
 
     def __setitem__(self, key, val):
         '''Sets config variable key to val.'''
@@ -650,21 +658,15 @@ class Neap(object):
     def switch_up(self):
         '''Switch to upper desktop.'''
         current = self.pager.get_current_desktop()
-        maxnum = self.pager.get_desktop_count()
         (rows, cols) = self.get_icon_desktop_layout()
-        new = (current - cols)
-        if 0 <= new <= maxnum:
-            self.pager.switch_desktop(new)
+        self.safe_switch_desktop(current - cols)
         return
 
     def switch_lower(self):
         '''Switch to lower desktop.'''
         current = self.pager.get_current_desktop()
-        maxnum = self.pager.get_desktop_count()
         (rows, cols) = self.get_icon_desktop_layout()
-        new = (current + cols)
-        if 0 <= new <= maxnum:
-            self.pager.switch_desktop(new)
+        self.safe_switch_desktop(current + cols)
         return
 
     def switch_left(self):
@@ -683,6 +685,13 @@ class Neap(object):
         (rows, cols) = self.get_icon_desktop_layout()
         new = (current + 1) % maxnum
         self.pager.switch_desktop(new)
+        return
+
+    def safe_switch_desktop(self, num):
+        '''Switch to desktop num if possible.'''
+        maxnum = self.pager.get_desktop_count()
+        if 0 <= num <= maxnum:
+            self.pager.switch_desktop(num)
         return
 
     def hotkey_init(self):
