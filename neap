@@ -73,7 +73,7 @@ columns = 0
 ;hotkey_right =
 ;hotkey_<num> can be defined up to 15
 ;hotkey_0 = <ctl>1
-;hotkey_1 = <ctrl>F2
+;hotkey_1 = <ctrl><alt>F2
 
 """
 
@@ -696,6 +696,7 @@ class Neap(object):
 
     def hotkey_init(self):
         assert keybinder
+
         if self.conf['hotkey_up']:
             keybinder.bind(self.conf['hotkey_up'], self.switch_up)
         if self.conf['hotkey_down']:
@@ -704,6 +705,12 @@ class Neap(object):
             keybinder.bind(self.conf['hotkey_left'], self.switch_left)
         if self.conf['hotkey_right']:
             keybinder.bind(self.conf['hotkey_right'], self.switch_right)
+
+        for i in range(16):
+            keystr = self.conf['hotkey_' + str(i)]
+            if keystr:
+                keybinder.bind(keystr, self.safe_switch_desktop, i)
+
         return
 
     def about(self, menu_item):
