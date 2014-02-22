@@ -676,6 +676,7 @@ class Neap(object):
         (rows, cols) = self.get_icon_desktop_layout()
         new = (current - 1) % maxnum
         self.pager.switch_desktop(new)
+        self.update_pixbuf(new)
         return
 
     def switch_right(self):
@@ -685,6 +686,7 @@ class Neap(object):
         (rows, cols) = self.get_icon_desktop_layout()
         new = (current + 1) % maxnum
         self.pager.switch_desktop(new)
+        self.update_pixbuf(new)
         return
 
     def safe_switch_desktop(self, num):
@@ -692,6 +694,7 @@ class Neap(object):
         maxnum = self.pager.get_desktop_count()
         if 0 <= num <= maxnum:
             self.pager.switch_desktop(num)
+            self.update_pixbuf(num)
         return
 
     def hotkey_init(self):
