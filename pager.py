@@ -10,6 +10,30 @@ from Xlib import X, display, error, Xatom, Xutil
 import Xlib.protocol.event
 
 
+class PagerFactory:
+
+    def get_pager(display, screen, root):
+        '''Auto-detects pager to use.'''
+        pager = None
+
+        grid = root.get_full_property(
+            display.get_atom('_NET_DESKTOP_LAYOUT'),
+            0)
+        size = root.get_full_property(
+            display.get_atom("_NET_DESKTOP_GEOMETRY"),
+            0)
+
+        if (grid is not None and grid.value[2] > 1 and grid.value[1] > 1):
+            return VirtualDesktopPager(display, screen, root)
+        elif (hasattr(size, 'value')
+                and (size.value[1] > screen.height_in_pixels
+                     or size.value[0] > screen.width_in_pixels)):
+            return ViewportPager(display, screen, root)
+        else:
+            # defaults to VirtualDesktop
+            return VirtualDesktopPager(display, screen, root)
+
+
 class Pager:
 
     '''Dummy pager, not intended to be used directly'''
@@ -34,7 +58,7 @@ class Pager:
         return 0
 
     def get_desktop_layout(self):
-        '''Returns a tupel containing the number of rows and cols, from the window manager.'''
+        '''Returns the number of rows and cols from the window manager.'''
 
         return (1, 1)
 
@@ -71,7 +95,8 @@ class Pager:
 
 class VirtualDesktopPager(Pager):
 
-    '''Virtual desktop / workspace -based pager. Should be used with most freedesktop-compliant window managers.'''
+    '''Virtual desktop / workspace -based pager.'''
+    '''Should be used with most freedesktop-compliant window managers.'''
 
     def get_current_desktop(self):
         '''Returns the index of the currently active desktop.'''
@@ -81,7 +106,7 @@ class VirtualDesktopPager(Pager):
             0).value[0]
 
     def get_desktop_layout(self):
-        '''Returns a tupel containing the number of rows and cols, from the window manager.'''
+        '''Returns the number of rows and cols, from the window manager.'''
 
         grid = self.root.get_full_property(
             self.display.get_atom('_NET_DESKTOP_LAYOUT'),
@@ -144,10 +169,11 @@ class VirtualDesktopPager(Pager):
 
 class ViewportPager(Pager):
 
-    '''Viewport-based pager. To be used with compiz and other viewport-based window managers.'''
+    '''Viewport-based pager.'''
+    '''To be used with compiz and other viewport-based window managers.'''
 
     def get_sreen_resolution(self):
-        '''Returns a tupel containing screen resolution in pixels as (width, height).'''
+        '''Returns the screen resolution in pixels as (width, height).'''
 
         return (self.screen.width_in_pixels, self.screen.height_in_pixels)
 
@@ -163,7 +189,7 @@ class ViewportPager(Pager):
 
     # TODO: optimize (cache ?)
     def get_desktop_layout(self):
-        '''Returns a tupel containing the number of rows and cols, from the window manager.'''
+        '''Returns the number of rows and cols from the window manager.'''
 
         w, h = self.get_sreen_resolution()
         size = self.root.get_full_property(
@@ -210,19 +236,3 @@ class ViewportPager(Pager):
 
         self.send_event(win, ctype, data)
         self.display.flush()
-
-
-def pager_auto_detect(display, screen, root):
-    '''Auto-detects pager to use.'''
-    pager = None
-
-    grid = root.get_full_property(display.get_atom('_NET_DESKTOP_LAYOUT'), 0)
-    size = root.get_full_property(display.get_atom("_NET_DESKTOP_GEOMETRY"), 0)
-
-    if (grid is not None and grid.value[2] > 1 and grid.value[1] > 1):
-        return VirtualDesktopPager(display, screen, root)
-    elif (hasattr(size, 'value') and (size.value[1] > screen.height_in_pixels or size.value[0] > screen.width_in_pixels)):
-        return ViewportPager(display, screen, root)
-    else:
-        # defaults to VirtualDesktop
-        return VirtualDesktopPager(display, screen, root)
