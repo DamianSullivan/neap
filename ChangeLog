@@ -1,3 +1,7 @@
+2014-12-29
+- forked from 10sr/neap to DamianSullivan/python-workspaces-lib
+  to refactor out the reusable parts of neap concerning workspace naming.
+
 2014-02-22
 - added hotkey like hotkey_0, hotkey_1, ... to switch to specified desktop
 
