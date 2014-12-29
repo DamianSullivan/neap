@@ -1,13 +1,3 @@
-To start, execute "neap" or "neap -h"
+This is a python library to interface with workspaces on Ubuntu.
 
-Check http://code.google.com/p/neap/
-for the latest release, documentation and sample config file.
-
-
-Hotkey
-======
-
-By installing `python-keybinder2` switching desktops with hotkeys is enabled.
-
-To set hotkeys, add section `[neap_hotkey]` to your `.neaprc` and add values
-like `hotkey_up = <Ctrl>Up`.
+Status: Early Draft
