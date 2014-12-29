@@ -11,10 +11,10 @@ import Xlib.protocol.event
 
 class Pager:
     '''Dummy pager, not intended to be used directly'''
-    
+
     def __init__(self, display, screen, root):
         '''Initialization.'''
-        
+
         self.display = display
         self.screen = screen
         self.root = root
@@ -26,12 +26,12 @@ class Pager:
 
     def get_current_desktop(self):
         '''Returns the index of the currently active desktop.'''
-        
+
         return 0
 
     def get_desktop_layout(self):
         '''Returns a tupel containing the number of rows and cols, from the window manager.'''
-        
+
         return (1,1)
 
     def get_desktop_count(self):
@@ -63,7 +63,7 @@ class Pager:
 
 class VirtualDesktopPager(Pager):
     '''Virtual desktop / workspace -based pager. Should be used with most freedesktop-compliant window managers.'''
-    
+
     def get_current_desktop(self):
         '''Returns the index of the currently active desktop.'''
 
@@ -130,7 +130,7 @@ class ViewportPager(Pager):
 
     def get_sreen_resolution(self):
         '''Returns a tupel containing screen resolution in pixels as (width, height).'''
-        
+
         return (self.screen.width_in_pixels, self.screen.height_in_pixels)
 
     def get_current_desktop(self):
@@ -155,7 +155,7 @@ class ViewportPager(Pager):
         if size != None:
             rows = round(size.value[1] / h)
             cols = round(size.value[0] / w)
-        
+
         return (int(rows), int(cols))
 
     def get_desktop_count(self):
@@ -182,7 +182,7 @@ class ViewportPager(Pager):
         x = int(num % cols)
         y = int(round((num-x)/cols))
         data = [x*w, y*h]
-        
+
         win = self.root
         ctype = self.display.get_atom("_NET_DESKTOP_VIEWPORT")
 
@@ -193,10 +193,10 @@ class ViewportPager(Pager):
 def pager_auto_detect(display, screen, root):
     '''Auto-detects pager to use.'''
     pager = None
-    
+
     grid = root.get_full_property(display.get_atom('_NET_DESKTOP_LAYOUT'), 0)
     size = root.get_full_property(display.get_atom("_NET_DESKTOP_GEOMETRY"), 0)
-    
+
     if (grid != None and grid.value[2] > 1 and grid.value[1] > 1):
         return VirtualDesktopPager(display, screen, root)
     elif (hasattr(size, 'value') and (size.value[1]>screen.height_in_pixels or size.value[0]>screen.width_in_pixels)):
