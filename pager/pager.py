@@ -12,7 +12,7 @@ import Xlib.protocol.event
 
 class PagerFactory:
 
-    def get_pager(display, screen, root):
+    def get_pager(self, display, screen, root):
         '''Auto-detects pager to use.'''
         pager = None
 
