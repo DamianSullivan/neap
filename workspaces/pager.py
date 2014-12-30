@@ -1,12 +1,7 @@
 import sys
-import os
-import re
 import math
-from datetime import datetime
 
-import gtk
-import gobject
-from Xlib import X, display, error, Xatom, Xutil
+from Xlib import X, display, Xatom
 import Xlib.protocol.event
 
 
